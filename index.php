@@ -3,22 +3,24 @@
 	// ini_set('display_errors', 'On');
 	// error_reporting(E_ALL | E_STRICT);
 
-	// In case a tmp file is needed 
+	// In case a tmp file is needed
 	// Leftover stuff from attempts to fix strange namespace thingy
 	// $date = new DateTime();
 	// $ts = $date->getTimestamp();
 	// $tmp_file_name = "tmp_$ts.xml";
 
 	// initialize some variables
-	
-	// the issued dois json file name 
+
+	// the issued dois json file name
 	// NB! This file is not part of this git repo. Must be checked out from a separate git repo
-	$doi_json_file = "data/issued_dois.json"; 
+	$doi_json_file = "data/issued_dois.json";
 
 	$xslt_file = ""; // the stylesheet file to use for the xslt transform
 	$xml = ""; // the xml DOMDocument to transform
 
-	if( ! isset($_GET['doi'])) { // Produce the list of issued DOIs
+	$doi = substr($_SERVER['REQUEST_URI'], 1);
+
+	if( ! $doi ) { // Produce the list of issued DOIs
 		// URI for all SND.BILS issued DOIs
 		$xml_uri = "https://search.datacite.org/api?q=*&fq=datacentre_facet%3A%22SND.BILS+-+Bioinformatics+Infrastructure+for+Life+Sciences%22&fl=doi,creator,title,publisher,publicationYear,datacentre&fq=is_active:true&fq=has_metadata:true&wt=xml&indent=true";
 
@@ -31,7 +33,6 @@
 
 
 	} else { // Produce the landing page for the specified DOI
-		$doi = $_GET['doi'];
 		$doi = strtoupper($doi); //make it uppercase to work with the entries in the issued_dois.json file
 
 		// URI for the specified DOI
@@ -56,7 +57,7 @@
 
 	    // Get the resource DOM element from the xml
 	    $top_element = $xml->getElementsByTagName("resource")->item(0);
-	    
+
 	    if (isset($data->{'DOIs'}->{$doi})) {
 	    	// echo "Found link for $doi";
 		    $data_link_arr = $data->{'DOIs'}->{$doi}->{'data_links'};
@@ -67,17 +68,17 @@
 		    // $data_links_element->setAttribute("xmlns", "http://datacite.org/schema/kernel-3");
 
 		    $top_element->appendChild($data_links_element);
-		    
+
 		    // Leftover stuff from attempts to fix strange namespace thingy
 		    // $ns_atr = $top_element->getAttributeNode ( "xmlns" );
 		    // var_dump($ns_atr);
-		    
+
 		    foreach ($data_link_arr as $link) {
 		    	$link_element = $xml->createElement( "data_link", $link );
 		    	$data_links_element->appendChild($link_element);
-		    	
+
 		    }
-		    // NB! The newly added elements don't seem to be considered to belong to the 
+		    // NB! The newly added elements don't seem to be considered to belong to the
 		    // same namespace as the parent element.
 		    // This affects how the xsl select statements should be specified
 	    }

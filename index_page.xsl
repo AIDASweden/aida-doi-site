@@ -65,7 +65,7 @@
 				          				<td>
 				          					<xsl:element name="a">
 	                      						<xsl:attribute name="href">
-				          							index.php?doi=<xsl:value-of select="str[@name='doi']"/>
+				          							<xsl:value-of select="str[@name='doi']"/>
 				          						</xsl:attribute>
 				          						<xsl:value-of select="str[@name='doi']"/>
 				          					</xsl:element>
