@@ -25,14 +25,13 @@ the xmlns assigment at the top of the file.
 This information is taken from a file that must be accessible as **data/issued_dois.json**.
 
 ## Usage
-Router page php application.
+Router page php application serving index page at / or /doi/. Everything after
+that is expected to be a DOI, eg:
 
-Index page served at / or /doi/, landing pages served at <index-dir>/<doi>, eg:
-
-https://doi.aida.medtech4health.se/10.23698/aida/drsk
-https://aida.medtech4health.se/doi/10.23698/aida/drsk
-https://localhost:8888/10.23698/aida/drsk
-https://localhost:8888/doi/10.23698/aida/drsk
+* https://doi.aida.medtech4health.se/10.23698/aida/drsk
+* https://aida.medtech4health.se/doi/10.23698/aida/drsk
+* https://localhost:8888/10.23698/aida/drsk
+* https://localhost:8888/doi/10.23698/aida/drsk
 
 Route all requests to index.php regardless of URI, similar to:
 
@@ -40,5 +39,5 @@ Route all requests to index.php regardless of URI, similar to:
 
 Some docs for Apache / local development here:
 
-https://stackoverflow.com/questions/5218213/create-a-catch-all-handler-in-php
-http://www.php.net//manual/en/features.commandline.webserver.php#example-413
+* https://stackoverflow.com/questions/5218213/create-a-catch-all-handler-in-php
+* http://www.php.net//manual/en/features.commandline.webserver.php#example-413
