@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:d='http://datacite.org/schema/kernel-3' >
-<!-- 
-The magic to get it to work is that the datacite namespace (which is declared for the <resource> element in the xml) 
+<!--
+The magic to get it to work is that the datacite namespace (which is declared for the <resource> element in the xml)
 is assigned to the prefix d (xmlns:d=...) in the declaration above.
 The d: prefix is then used in the select attributes of the xsl statements
  -->
@@ -13,7 +13,7 @@ The d: prefix is then used in the select attributes of the xsl statements
       <meta http-equiv="X-UA-Compatible" content="IE=edge" />
       <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-      <title><xsl:value-of select="d:resource/d:identifier"/></title>
+      <title><xsl:value-of select="d:resource/d:identifier"/> - AIDA DOI repository</title>
 
       <script type="text/javascript" src="https://code.jquery.com/jquery.min.js"></script>
       <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
@@ -33,8 +33,11 @@ The d: prefix is then used in the select attributes of the xsl statements
       <xsl:attribute name="itemtype">http://schema.org/Dataset</xsl:attribute>
       <xsl:attribute name="class">container</xsl:attribute>
       <xsl:attribute name="itemid">http://doi.org/<xsl:value-of select="d:resource/d:identifier"/></xsl:attribute>
+        <a href="https://medtech4health.se/aida"><img src="https://medtech4health.se/wp-content/uploads/2018/01/AIDA-banner-smal.jpg" style="max-width: 100%;" title="AIDA banner" /></a>
+
         <div class="page-header">
-          <h3>doi:<xsl:value-of select="d:resource/d:identifier"/></h3>
+          <h3><a href="../.." style="color: black;">AIDA DOI repository</a></h3>
+          <h2>doi:<xsl:value-of select="d:resource/d:identifier"/></h2>
         </div>
         <div class="panel panel-success">
         <div class="panel-heading">
@@ -123,12 +126,12 @@ The d: prefix is then used in the select attributes of the xsl statements
                     <xsl:if test="position()=last()-1">and </xsl:if>
                   </xsl:for-each>
                   (<xsl:value-of select="d:resource/d:publicationYear"/>)
-                  <xsl:value-of select="d:resource/d:titles/d:title"/> 
+                  <xsl:value-of select="d:resource/d:titles/d:title"/>
                   <!-- <br/> -->
                   <xsl:element name="a">
                     <xsl:attribute name="href">
                       http://doi.org/<xsl:value-of select="d:resource/d:identifier"/>
-                    </xsl:attribute> 
+                    </xsl:attribute>
                     doi:<xsl:value-of select="d:resource/d:identifier"/>
                   </xsl:element>
                 </td>
@@ -139,14 +142,14 @@ The d: prefix is then used in the select attributes of the xsl statements
                   <xsl:if test="d:resource/fullCitation">
                     <xsl:value-of select="d:resource/fullCitation" />
                     <!-- NOTE! This bit is parsing parts of the xml that was added in memory
-                    in the PHP code in index.php. It seems the newly added element 
+                    in the PHP code in index.php. It seems the newly added element
                     (fullCitation) is not considered to belong to the same
                     namespace as the parent nodes (notice the absence of the d: prefix in the
                     select statement above). -->
                     <xsl:element name="a">
                       <xsl:attribute name="href">
                         http://doi.org/<xsl:value-of select="d:resource/fullCitation/@citation_doi"/>
-                      </xsl:attribute> 
+                      </xsl:attribute>
                       doi:<xsl:value-of select="d:resource/fullCitation/@citation_doi"/>
                     </xsl:element>
                   </xsl:if>
@@ -165,11 +168,11 @@ The d: prefix is then used in the select attributes of the xsl statements
             <!-- <xsl:for-each select="d:resource/d:data_links/d:data_link"> -->
             <xsl:for-each select="d:resource/data_links/data_link">
             <!-- NOTE! This bit is parsing parts of the xml that was added in memory
-            in the PHP code in index.php. It seems the newly added elements 
+            in the PHP code in index.php. It seems the newly added elements
             (data_links and data_link) are not considered to belong to the same
             namespace as the parent nodes (notice the absence of the d: prefix in the
             select statement above). -->
-            
+
               <!-- test if string contains a url -->
               <xsl:if test="contains(.,'http')">
                 <xsl:element name="a">
@@ -179,15 +182,15 @@ The d: prefix is then used in the select attributes of the xsl statements
                   <xsl:value-of select="."/>
                 </xsl:element>
               </xsl:if>
-              
+
               <!-- test if string contains a mail address -->
               <xsl:if test="contains(.,'@')">
-                Please contact 
+                Contact
                 <xsl:element name="a">
                   <xsl:attribute name="href">mailto:<xsl:value-of select="."/>?subject=Requesting access to DOI:<xsl:value-of select="./../../d:identifier"/> dataset</xsl:attribute>
                   <xsl:value-of select="."/>
                 </xsl:element>
-                in order to apply for access.
+                for access.
               </xsl:if>
 
               <br/>

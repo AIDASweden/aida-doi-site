@@ -18,7 +18,8 @@
 	$xslt_file = ""; // the stylesheet file to use for the xslt transform
 	$xml = ""; // the xml DOMDocument to transform
 
-	$doi = substr($_SERVER['REQUEST_URI'], 1);
+	$doi = preg_replace('/^\/(doi\/)?/', '', $_SERVER['REQUEST_URI']);
+	//$doi = substr($_SERVER['REQUEST_URI'], 1);
 
 	if( ! $doi ) { // Produce the list of issued DOIs
 		// URI for all SND.BILS issued DOIs
