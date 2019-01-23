@@ -41,3 +41,8 @@ Some docs for Apache / local development here:
 
 * https://stackoverflow.com/questions/5218213/create-a-catch-all-handler-in-php
 * http://www.php.net//manual/en/features.commandline.webserver.php#example-413
+
+## Acknowledgements
+
+This site code was heavily inspired by [doi.nbis.se](https://doi.nbis.se).
+Thank you for the [source code](https://github.com/NBISweden/doi-bils-site)!
