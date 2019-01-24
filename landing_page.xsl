@@ -99,7 +99,7 @@ The d: prefix is then used in the select attributes of the xsl statements
                 <td><xsl:value-of select="d:resource/d:publicationYear"/></td>
               </tr>
               <tr>
-                <td>doi</td>
+                <td>DOI</td>
                 <td itemprop="identifier" ><xsl:value-of select="d:resource/d:identifier"/></td>
               </tr>
               <tr>
@@ -161,41 +161,51 @@ The d: prefix is then used in the select attributes of the xsl statements
           </div>
         </div>
         <div class="panel panel-success">
+          <!-- NOTE! This bit is parsing parts of the xml that was added in memory
+          in the PHP code in index.php. It seems the newly added elements
+          (data_links and data_link) are not considered to belong to the same
+          namespace as the parent nodes (notice the absence of the d: prefix in the
+          select statement above). -->
           <div class="panel-heading">
             <h3 class="panel-title">Download</h3>
           </div>
           <div class="panel-body">
-            <!-- <xsl:for-each select="d:resource/d:data_links/d:data_link"> -->
-            <xsl:for-each select="d:resource/data_links/data_link">
-            <!-- NOTE! This bit is parsing parts of the xml that was added in memory
-            in the PHP code in index.php. It seems the newly added elements
-            (data_links and data_link) are not considered to belong to the same
-            namespace as the parent nodes (notice the absence of the d: prefix in the
-            select statement above). -->
-
-              <!-- test if string contains a url -->
-              <xsl:if test="contains(.,'http')">
-                <xsl:element name="a">
-                  <xsl:attribute name="href">
-                    <xsl:value-of select="."/>
-                  </xsl:attribute>
+            <!-- download links, if any -->
+            <xsl:for-each select="d:resource/data-links/data-link">
+              <xsl:element name="a">
+                <xsl:attribute name="href">
                   <xsl:value-of select="."/>
-                </xsl:element>
-              </xsl:if>
-
-              <!-- test if string contains a mail address -->
-              <xsl:if test="contains(.,'@')">
-                Contact
-                <xsl:element name="a">
-                  <xsl:attribute name="href">mailto:<xsl:value-of select="."/>?subject=Requesting access to DOI:<xsl:value-of select="./../../d:identifier"/> dataset</xsl:attribute>
-                  <xsl:value-of select="."/>
-                </xsl:element>
-                for access.
-              </xsl:if>
-
+                </xsl:attribute>
+                <xsl:value-of select="."/>
+              </xsl:element>
               <br/>
             </xsl:for-each>
-
+            <xsl:if test="d:resource/data-links/data-link"><br/></xsl:if>
+            <!-- contact points for access, if any -->
+            <xsl:if test="d:resource/data-links/access-request-link">
+              Please contact
+              <xsl:for-each select="d:resource/data-links/access-request-link">
+                <!-- test if string contains a url -->
+                <xsl:if test="contains(.,'http')">
+                  <xsl:element name="a">
+                    <xsl:attribute name="href">
+                      <xsl:value-of select="."/>
+                    </xsl:attribute>
+                    <xsl:value-of select="."/>
+                  </xsl:element>
+                </xsl:if>
+                <!-- test if string contains a mail address -->
+                <xsl:if test="contains(.,'@')">
+                  <xsl:element name="a">
+                    <xsl:attribute name="href">mailto:<xsl:value-of select="."/>?subject=Requesting access to DOI:<xsl:value-of select="./../../d:identifier"/> dataset</xsl:attribute>
+                    <xsl:value-of select="."/>
+                  </xsl:element>
+                </xsl:if>
+                <xsl:if test="position()&lt;last()-1">, </xsl:if>
+                <xsl:if test="position()=last()-1"> or </xsl:if>
+              </xsl:for-each>
+              to request access.
+            </xsl:if>
           </div>
         </div>
 
