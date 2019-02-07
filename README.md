@@ -23,7 +23,7 @@ Edit Apache config 000-default.conf to your liking. Then:
 ```
 sudo docker build -t aida-doi-site .
 git clone git@github.com:AIDASweden/aida-doi-site-data.git
-sudo docker run -d -v "$PWD"/aida-doi-site-data:/var/www/html/data aida-doi-site:latest
+sudo docker run -d -p 443:443 -v "$PWD"/aida-doi-site-data:/var/www/html/data aida-doi-site:latest
 ```
 
 You can use eg `ln -s /path/to/data; php -S localhost:8888 index.php` for local testing
